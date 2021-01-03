@@ -4,25 +4,30 @@ import pygame
 import pygame_gui
 
 maps_d = 'MAPS'
-tile_size = 32
+tile_size = 40
 pygame.init()
 size = width, height = 620, 560
 screen = pygame.display.set_mode(size)
+j = 0
 
 background = pygame.Surface((620, 560))
-color = 'coral'
+color = (174, 96, 170)
 background.fill(pygame.Color(color))
 manager = pygame_gui.UIManager((620, 560))
 screen.blit(background, (0, 0))
 
 start = pygame_gui.elements.UIButton(
-    relative_rect=pygame.Rect((10, 10), (300, 300)),
+    relative_rect=pygame.Rect((150, 150), (300, 300)),
     text='START',
+    manager=manager)
+ret = pygame_gui.elements.UIButton(
+    relative_rect=pygame.Rect((30, 675), (70, 20)),
+    text='return',
     manager=manager)
 
 
 class Lab:
-    def __init__(self, filename):
+    def __init__(self, filename, free_t, finish_t):
         self.map = []
         with open(f"{maps_d}/{filename}") as input_file:
             for line in input_file:
@@ -30,16 +35,34 @@ class Lab:
         self.h = len(self.map)
         self.w = len(self.map[0])
         self.tile_size = tile_size
+        self.free_t = free_t
+        self.finish_t = finish_t
 
     def render(self, screen):
-        colors = {0: (0, 0, 0), 1: (255, 0, 0)}
+        colors = {0: (174, 96, 170), 1: (255, 0, 0), 2: (0, 0, 0), 3: (153, 153, 153)}
         for y in range(self.h):
             for x in range(self.w):
-                rect = pygame.Rect(x * self.tile_size, y * self.tile_size, self.tile_size, self.tile_size)
-                screen.fill(colors[self.get_tile_id((x, y))], rect)
+                if self.get_tile_id((x, y)) == 1:
+                    a, b = tile_size, tile_size
+                    pygame.draw.rect(screen, (123, 47, 139), (x * tile_size, y * tile_size, a, b))
+                    for i in range(4, a + 2, 8):
+                        for j in range(4, b + 2, 8):
+                            pygame.draw.rect(screen, (14, 9, 15), (x * tile_size + a - i, y * tile_size + b - j, 4, 4))
+                    for i in range(4, a + 2, 12):
+                        for j in range(4, b + 2, 12):
+                            pygame.draw.rect(screen, (201, 0, 190), (x * tile_size + a - i, y * tile_size + b - j, 4, 4))
+                    for i in range(4, a + 2, 10):
+                        for j in range(4, b + 2, 10):
+                            pygame.draw.rect(screen, (153, 153, 153), (x * tile_size + a - i, y * tile_size + b - j, 4, 4))
+                else:
+                    rect = pygame.Rect(x * self.tile_size, y * self.tile_size, self.tile_size, self.tile_size)
+                    screen.fill(colors[self.get_tile_id((x, y))], rect)
 
     def get_tile_id(self, position):
         return self.map[position[1]][position[0]]
+
+    def is_free(self, position):
+        return self.get_tile_id(position) in self.free_t
 
 
 class Hero:
@@ -61,31 +84,59 @@ class Hero:
 
     def render(self, screen):
         if self.map[self.x - 1][self.y - 1] == 1:
-            center = self.x * tile_size + tile_size // 2, self.y * tile_size + tile_size // 2
-            ter = self.x * tile_size, self.y * tile_size
-            pygame.draw.line(screen, (200, 200, 200), center, ter, 2)
+            my_image = pygame.image.load("data/hero4.png").convert_alpha()
+            scaled_image = pygame.transform.scale(my_image, (tile_size, tile_size))
+            screen.blit(scaled_image, (self.x * tile_size, self.y * tile_size))
+            # center = self.x * tile_size + tile_size // 2, self.y * tile_size + tile_size // 2
+            # ter = 5
+            # pygame.draw.circle(screen, (200, 200, 200), center, ter)
         elif self.map[self.x + 1][self.y + 1] == 1:
-            center = self.x * tile_size + tile_size // 2, self.y * tile_size + tile_size // 2
-            ter = self.x * tile_size, self.y * tile_size
-            pygame.draw.line(screen, (200, 200, 200), center, ter, 2)
+            my_image = pygame.image.load("data/hero4.png").convert_alpha()
+            scaled_image = pygame.transform.scale(my_image, (tile_size, tile_size))
+            screen.blit(scaled_image, (self.x * tile_size, self.y * tile_size))
+            # center = self.x * tile_size + tile_size // 2, self.y * tile_size + tile_size // 2
+            # ter = 5
+            # pygame.draw.circle(screen, (200, 200, 200), center, ter)
         elif self.map[self.x][self.y + 1] == 1:
-            center = self.x * tile_size + tile_size // 2, self.y * tile_size + tile_size // 2
-            ter = self.x * tile_size, self.y * tile_size
-            pygame.draw.line(screen, (200, 200, 200), center, ter, 2)
+            my_image = pygame.image.load("data/hero4.png").convert_alpha()
+            scaled_image = pygame.transform.scale(my_image, (tile_size, tile_size))
+            screen.blit(scaled_image, (self.x * tile_size, self.y * tile_size))
+            # center = self.x * tile_size + tile_size // 2, self.y * tile_size + tile_size // 2
+            # ter = 5
+            # pygame.draw.circle(screen, (200, 200, 200), center, ter)
         elif self.map[self.x + 1][self.y] == 1:
-            center = self.x * tile_size + tile_size // 2, self.y * tile_size + tile_size // 2
-            ter = self.x * tile_size, self.y * tile_size
-            pygame.draw.line(screen, (200, 200, 200), center, ter, 2)
+            my_image = pygame.image.load("data/hero4.png").convert_alpha()
+            scaled_image = pygame.transform.scale(my_image, (tile_size, tile_size))
+            screen.blit(scaled_image, (self.x * tile_size, self.y * tile_size))
+            # center = self.x * tile_size + tile_size // 2, self.y * tile_size + tile_size // 2
+            # ter = 5
+            # pygame.draw.circle(screen, (200, 200, 200), center, ter)
 
 
 class Game:
-    def __init__(self, lab):
+    def __init__(self, lab, hero):
         self.lab = lab
+        self.hero = hero
 
     def render(self, screen):
         self.lab.render(screen)
+        self.hero.render(screen)
+
+    def update_hero(self):
+        n_x, n_y = self.hero.get_position()
+        if pygame.key.get_pressed()[pygame.K_LEFT]:
+            n_x -= 1
+        if pygame.key.get_pressed()[pygame.K_RIGHT]:
+            n_x += 1
+        if pygame.key.get_pressed()[pygame.K_DOWN]:
+            n_y += 1
+        if pygame.key.get_pressed()[pygame.K_UP]:
+            n_y -= 1
+        if self.lab.is_free((n_x, n_y)):
+            self.hero.set_position((n_x, n_y))
 
 
+d = 0
 clock = pygame.time.Clock()
 running = True
 while running:
@@ -96,8 +147,8 @@ while running:
             running = False
         if event.type == pygame.USEREVENT:
             if event.user_type == pygame_gui.UI_BUTTON_START_PRESS:
-                if event.ui_element == start:
-                    size = width, height = 650, 700
+                if event.ui_element == start or event.ui_element == ret:
+                    size = width, height = 650, 650
                     screen = pygame.display.set_mode(size)
 
                     background = pygame.Surface((650, 700))
@@ -254,32 +305,50 @@ while running:
                     manager.draw_ui(screen)
                     pygame.display.update()
                     clock.tick(60)
+                    d = 0
                     continue
                 if event.ui_element == switch:
                     k = 'uo.txt'
+                    position = (5, 5)
                 if event.ui_element == switch1:
                     k = 'map'
+                    position = (2, 10)
                 if event.ui_element == switch2:
                     k = 'map1'
+                    position = (5, 5)
                 if event.ui_element == switch3:
                     k = 'map2'
+                    position = (2, 10)
                 if event.ui_element == switch4:
                     k = 'map3'
+                    position = (5, 5)
                 if event.ui_element == switch5:
                     k = 'map4'
+                    position = (5, 5)
                 if event.ui_element == switch6:
                     k = 'map5'
+                    position = (5, 5)
                 if event.ui_element == switch7:
                     k = 'map6'
-                size = width, height = 650, 700
+                    position = (5, 5)
+                size = width, height = 810, 880
                 screen1 = pygame.display.set_mode(size)
 
-                manager = pygame_gui.UIManager((650, 700))
-                lab = Lab(k)
-                game = Game(lab)
-                game.render(screen1)
-                pygame.display.update()
+                manager = pygame_gui.UIManager((810, 880))
+                ret = pygame_gui.elements.UIButton(
+                    relative_rect=pygame.Rect((30, 847), (70, 20)),
+                    text='return',
+                    manager=manager)
+                j = 1
+                d = 1
         manager.process_events(event)
+    if j == 1 and d == 1:
+        hero = Hero(position, k)
+        lab = Lab(k, [0, 3], 3)
+        game = Game(lab, hero)
+        game.update_hero()
+        position = hero.get_position()
+        game.render(screen1)
     manager.update(time_de)
     manager.draw_ui(screen)
     pygame.display.update()
