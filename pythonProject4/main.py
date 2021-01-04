@@ -277,6 +277,7 @@ while running:
             if event.user_type == pygame_gui.UI_BUTTON_START_PRESS:
                 if event.ui_element == ex:
                     running = False
+                    continue
                 if event.ui_element == start or event.ui_element == ret:
                     size = width, height = 650, 600
                     screen = pygame.display.set_mode(size)
@@ -450,16 +451,19 @@ while running:
                     fihish_id = (19, 9)
                 if event.ui_element == switch1:
                     k = 'map'
-                    position = (2, 10)
-                    w_position = (15, 13)
+                    position = (2, 15)
+                    w_position = (15, 12)
+                    fihish_id = (6, 3)
                 if event.ui_element == switch2:
                     k = 'map1'
                     position = (5, 5)
                     w_position = (15, 13)
+                    fihish_id = (6, 3)
                 if event.ui_element == switch3:
                     k = 'map2'
                     position = (2, 10)
                     w_position = (15, 13)
+                    fihish_id = (17, 1)
                 if event.ui_element == switch4:
                     k = 'map3'
                     position = (5, 5)
