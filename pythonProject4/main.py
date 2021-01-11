@@ -560,6 +560,26 @@ while running:
                     position = (20, 1)
                     w_position = (5, 18)
                     fihish_id = (9, 7)
+                if event.ui_element == switch7:
+                    k = 'map7'
+                    position = (1, 1)
+                    w_position = (13, 18)
+                    fihish_id = (19, 10)
+                if event.ui_element == switch8:
+                    k = 'map8'
+                    position = (1, 1)
+                    w_position = (4, 4)
+                    fihish_id = (13, 16)
+                if event.ui_element == switch9:
+                    k = 'map9'
+                    position = (5, 19)
+                    w_position = (13, 12)
+                    fihish_id = (18, 19)
+                if event.ui_element == switch10:
+                    k = 'map10'
+                    position = (6, 19)
+                    w_position = (19, 3)
+                    fihish_id = (13, 3)
                 size = width, height = 810, 880
                 screen1 = pygame.display.set_mode(size)
 
