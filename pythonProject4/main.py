@@ -216,10 +216,12 @@ class War:
 
 
 class Game:
-    def __init__(self, lab, hero, war):
+    def __init__(self, lab, hero, war, war2=0):
         self.lab = lab
         self.hero = hero
         self.war = war
+        if war2 != 0:
+            self.war2 = war2
 
     def render(self, screen):
         self.lab.render(screen)
@@ -264,9 +266,12 @@ def show(screen, massage):
 
 z = 1
 d = 0
+music = pygame.mixer.Sound("voice/re.wav")
+music.play(0)
 clock = pygame.time.Clock()
 running = True
 game_over = False
+schet = 0
 while running:
     g = 1
     time_de = clock.tick(60) / 1000.0
@@ -279,6 +284,76 @@ while running:
                     running = False
                     continue
                 if event.ui_element == start or event.ui_element == ret:
+                    if schet != 1:
+                        pygame.display.set_caption('THE BEST LAB')
+                        size = width, height = 1910, 1070
+                        screen1 = pygame.display.set_mode(size)
+
+                        run = True
+                        x_pos = 0
+                        v = 20  # пикселей в секунду
+                        clock = pygame.time.Clock()
+                        my_image = pygame.image.load("data/hero4.png").convert_alpha()
+                        j = 0
+                        k = 10
+                        t = 0
+                        g = 0
+                        p = 0
+                        while run:
+                            for event in pygame.event.get():
+                                if event.type == pygame.MOUSEBUTTONDOWN:
+                                    run = False
+                            screen1.fill((82, 0, 135))
+                            if int(x_pos) <= 740:
+                                screen1.blit(my_image, (int(x_pos), 150))
+                                x_pos += v * clock.tick() / 50  # v * t в секундах
+                            else:
+                                screen1.blit(my_image, (740, 150))
+                                j = 1
+                            if j == 1:
+                                pygame.draw.rect(screen1, (82, 0, 135), (0, 0, 1910, 1070))
+                                if 433 - k > 200:
+                                    scaled_image = pygame.transform.scale(my_image, (433 - k, 512 - k))
+                                    k += 10
+                                    screen1.blit(scaled_image, (740, 150 - t))
+                                    t -= 10
+                                else:
+                                    screen1.blit(scaled_image, (740, 150 - t))
+                                    g = 1
+                            if g == 1:
+                                war_image = pygame.image.load("data/war.png").convert_alpha()
+                                war_image = pygame.transform.scale(war_image, (433 - k, 512 - k))
+                                war1_image = pygame.image.load("data/war1.png").convert_alpha()
+                                war1_image = pygame.transform.scale(war1_image, (433 - k, 512 - k))
+                                war2_image = pygame.image.load("data/war2.png").convert_alpha()
+                                war2_image = pygame.transform.scale(war2_image, (433 - k, 512 - k))
+                                war3_image = pygame.image.load("data/hero3.png").convert_alpha()
+                                war3_image = pygame.transform.scale(war3_image, (433 - k, 512 - k))
+                                screen1.blit(war_image, (500, 50))
+                                screen1.blit(war1_image, (1000, 100))
+                                screen1.blit(war2_image, (600, 700))
+                                screen1.blit(war3_image, (950, 600))
+                                p = 1
+                            if p == 1:
+                                pygame.draw.rect(screen1, (82, 0, 135), (0, 0, 1910, 1070))
+                                war_image = pygame.image.load("data/war.png").convert_alpha()
+                                war_image = pygame.transform.scale(war_image, (433 - k, 512 - k))
+                                war1_image = pygame.image.load("data/war1.png").convert_alpha()
+                                war1_image = pygame.transform.scale(war1_image, (433 - k, 512 - k))
+                                war2_image = pygame.image.load("data/war2.png").convert_alpha()
+                                war2_image = pygame.transform.scale(war2_image, (433 - k, 512 - k))
+                                war3_image = pygame.image.load("data/hero3.png").convert_alpha()
+                                war3_image = pygame.transform.scale(war3_image, (433 - k, 512 - k))
+                                screen1.blit(war_image, (500, 50))
+                                screen1.blit(war1_image, (1000, 100))
+                                screen1.blit(war2_image, (570, 650))
+                                screen1.blit(war3_image, (950, 600))
+                                screen1.blit(scaled_image, (int(x_pos), 150 - t))
+                                x_pos += v * clock.tick() / 50  # v * t в секундах
+
+                            pygame.display.flip()
+                            schet = 1
+
                     size = width, height = 650, 600
                     screen = pygame.display.set_mode(size)
 
@@ -443,42 +518,48 @@ while running:
                     pygame.display.update()
                     clock.tick(15)
                     d = 0
+                    music.stop()
                     continue
                 if event.ui_element == switch:
                     k = 'uo.txt'
                     position = (5, 5)
                     w_position = (15, 13)
                     fihish_id = (19, 9)
-                if event.ui_element == switch1:
+                if event.ui_element == switch2:
                     k = 'map'
                     position = (2, 15)
                     w_position = (15, 12)
                     fihish_id = (6, 3)
-                if event.ui_element == switch2:
+                if event.ui_element == switch4:
                     k = 'map1'
-                    position = (5, 5)
-                    w_position = (15, 13)
-                    fihish_id = (6, 3)
+                    position = (18, 16)
+                    w_position = (5, 5)
+                    fihish_id = (4, 3)
                 if event.ui_element == switch3:
                     k = 'map2'
-                    position = (2, 10)
-                    w_position = (15, 13)
+                    position = (14, 17)
+                    w_position = (5, 5)
                     fihish_id = (17, 1)
-                if event.ui_element == switch4:
+                if event.ui_element == switch1:
                     k = 'map3'
-                    position = (5, 5)
-                    w_position = (15, 13)
-                if event.ui_element == switch5:
+                    position = (2, 10)
+                    w_position = (5, 5)
+                    fihish_id = (12, 7)
+                if event.ui_element == switch35:
                     k = 'map4'
-                    position = (5, 5)
-                    w_position = (15, 13)
-                if event.ui_element == switch6:
+                    position = (1, 1)
+                    w_position = (9, 4)
+                    fihish_id = (13, 11)
+                if event.ui_element == switch5:
                     k = 'map5'
-                    position = (5, 5)
-                    w_position = (15, 13)
-                if event.ui_element == switch7:
+                    position = (18, 19)
+                    w_position = (5, 5)
+                    fihish_id = (1, 7)
+                if event.ui_element == switch6:
                     k = 'map6'
-                    position = (5, 5)
+                    position = (20, 1)
+                    w_position = (5, 18)
+                    fihish_id = (9, 7)
                 size = width, height = 810, 880
                 screen1 = pygame.display.set_mode(size)
 
@@ -502,6 +583,8 @@ while running:
         w_position = war.get_position()
         game.render(screen1)
         if position == fihish_id:
+            music = pygame.mixer.Sound("voice/Win (online-audio-converter.com).wav")
+            music.play(0)
             font = pygame.font.Font(None, 50)
             text = font.render('WON!:)', 1, (201, 0, 190))
             text_x = 810 // 2 - text.get_width() // 2
@@ -512,6 +595,8 @@ while running:
             screen.blit(text, (text_x, text_y))
             d = 0
         if position == w_position:
+            music = pygame.mixer.Sound("voice/Lost (online-audio-converter.com).wav")
+            music.play(0)
             font = pygame.font.Font(None, 50)
             text = font.render('LOST!:( TRY AGAIN', 1, (201, 0, 190))
             text_x = 810 // 2 - text.get_width() // 2
